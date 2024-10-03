@@ -4,7 +4,11 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  users: CreateUserDto[] = [];
+  users: CreateUserDto[] = [
+    { id: 1, name: 'john', age: 23 },
+    { id: 2, name: 'Doe', age: 33 },
+    { id: 3, name: 'bob', age: 12 },
+  ];
 
   getAllUsers() {
     return {
