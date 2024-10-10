@@ -27,6 +27,11 @@ export class UsersController {
     return this.userService.createUser(createUserDto);
   }
 
+  @Get('/practice')
+  practice() {
+    return this.userService.practice();
+  }
+
   @Get(':id')
   getUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getUser(id);

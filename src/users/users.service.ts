@@ -3,7 +3,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, Like, MoreThan, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -73,4 +73,44 @@ export class UsersService {
 
     return { status: 'success', data: null };
   }
+
+  /*
+  SELECT * FROM user WHERE (
+    user.id > 3 AND user.dateOfBirth > '2001-02-12T13:00:00' )
+    OR user.username LIKE '%jo%'
+  ORDER BY user.id DESK
+  LIMIT 2
+  */
+  async practice() {
+    return await this.userRepository.find({
+      // select: ['id', 'dateOfBirth'],
+      where: [
+        {
+          id: MoreThan(3),
+          dateOfBirth: LessThan(new Date('2001-02-12T13:00:00')),
+        },
+        {
+          username: Like('%jo%'),
+        },
+      ],
+      take: 2,
+      order: {
+        id: 'DESC',
+      },
+    });
+  }
 }
+
+/*
+ADVANCED TYPEORM OPTIONS
+
+import {MoreThan} from 'typeorm'
+SELECT * FROM user Where id = 3
+  => await this.userRepository.find({where: {id: 3}});
+
+SELECT * FROM user Where id > 3
+  => await this.userRepository.find({where: {id: MoreThan(3)}});
+
+SELECT * FROM user Where id > 3 AND dateOfBirth > '2000-05-04'
+  => await this.userRepository.find({where: {id: MoreThan(3), dateOfBirth: MoreThan('2000-05-04')}});
+*/
