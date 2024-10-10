@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './user.entity';
@@ -12,7 +12,9 @@ export class UsersService {
     return {
       status: 'success',
       numOfResults: this.users.length,
-      users: this.users,
+      data: {
+        users: this.users,
+      },
     };
   }
 
@@ -29,17 +31,25 @@ export class UsersService {
 
   getUser(id: number) {
     const user = this.users.find((user) => user.id === id);
-    console.log(user);
+
+    if (!user) throw new NotFoundException(`User not found. id: ${id}`);
 
     return { status: 'success', data: { user } };
   }
 
   updateUser(id: number, updateUserDto: UpdateUserDto) {
     const index = this.users.findIndex((user) => user.id === id);
+
+    if (index === -1) throw new NotFoundException(`User not found. id: ${id}`);
+
+    const dateOfBirth = updateUserDto.dateOfBirth
+      ? new Date(updateUserDto.dateOfBirth)
+      : this.users[index].dateOfBirth;
+
     const user: User = {
       ...this.users[index],
       ...updateUserDto,
-      dateOfBirth: new Date(updateUserDto.dateOfBirth),
+      dateOfBirth,
     };
     this.users[index] = user;
 
@@ -47,6 +57,9 @@ export class UsersService {
   }
 
   deleteUser(id: number) {
+    const user = this.users.find((user) => user.id === id);
+    if (!user) throw new NotFoundException(`User not found. id: ${id}`);
+
     this.users = this.users.filter((user) => user.id !== id);
 
     return { status: 'success', data: null };
