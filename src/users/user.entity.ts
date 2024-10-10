@@ -9,7 +9,7 @@ export class User {
   name: string;
 
   @Column()
-  dateOfBirth: Date;
+  username: string;
 
   @Column()
   password: string;
@@ -18,5 +18,5 @@ export class User {
   email: string;
 
   @Column()
-  username: string;
+  dateOfBirth: Date;
 }
