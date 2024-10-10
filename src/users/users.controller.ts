@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  // ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -23,6 +24,7 @@ export class UsersController {
   }
 
   @Post()
+  // createUser(@Body(ValidationPipe) createUserDto: CreateUserDto) { // to validate a single route | i.e. not enabled globally
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
