@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Like, MoreThan, Repository } from 'typeorm';
+import { QueryType } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
@@ -12,7 +13,8 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async getAllUsers() {
+  async getAllUsers(query: QueryType) {
+    console.log('query', query);
     const users = await this.userRepository.find();
 
     return {

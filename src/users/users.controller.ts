@@ -8,19 +8,21 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   // ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
+import { QueryType } from './interfaces/user.interface';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  getAllUsers(@Query() query: QueryType) {
+    return this.userService.getAllUsers(query);
   }
 
   @Post()
