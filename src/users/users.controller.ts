@@ -22,6 +22,7 @@ export class UsersController {
 
   @Get()
   getAllUsers(@Query() query: QueryType) {
+    console.log(process.env.DB_HOST);
     return this.userService.getAllUsers(query);
   }
 
