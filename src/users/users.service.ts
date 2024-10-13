@@ -1,21 +1,26 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LessThan, Like, MoreThan, Repository } from 'typeorm';
 import { QueryType } from './interfaces/user.interface';
+import { UsersController } from './users.controller';
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersController.name);
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
 
   async getAllUsers(query: QueryType) {
-    console.log('query', query);
+    console.log('query : ', query);
     const users = await this.userRepository.find();
+
+    this.logger.debug(`Found ${users.length} users`);
 
     return {
       status: 'success',

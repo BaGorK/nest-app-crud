@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -18,11 +19,13 @@ import { QueryType } from './interfaces/user.interface';
 
 @Controller('users')
 export class UsersController {
+  private readonly logger = new Logger(UsersController.name);
+
   constructor(private readonly userService: UsersService) {}
 
   @Get()
   getAllUsers(@Query() query: QueryType) {
-    console.log(process.env.DB_HOST);
+    this.logger.log('get all user route');
     return this.userService.getAllUsers(query);
   }
 
