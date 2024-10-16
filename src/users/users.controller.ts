@@ -35,7 +35,7 @@ export class UsersController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Get('/practice')
+  @Get('practice')
   practice() {
     return this.userService.practice();
   }

@@ -90,7 +90,7 @@ export class UsersService {
   */
   async practice() {
     return await this.userRepository.find({
-      // select: ['id', 'dateOfBirth'],
+      select: ['id', 'dateOfBirth'],
       where: [
         {
           id: MoreThan(3),
